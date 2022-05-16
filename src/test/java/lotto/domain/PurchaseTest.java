@@ -35,4 +35,16 @@ class PurchaseTest {
         // then
         assertThatThrownBy(throwingCallable).isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    @DisplayName("로또 매수에 해당하는 구입 금액을 반환한다.")
+    void money() {
+        // given
+
+        // when
+        int money = Purchase.money(3);
+
+        // then
+        assertThat(money).isEqualTo(3_000);
+    }
 }

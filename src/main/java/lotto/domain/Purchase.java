@@ -22,4 +22,8 @@ public class Purchase {
     public int count() {
         return money / PRICE;
     }
+
+    public static int money(int count) {
+        return PRICE * count;
+    }
 }
