@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.*;
 
 assertThatThrownBy(() -> {
 // ...
-        }).isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessageContaining("Index: 2, Size: 2");
+}).isInstanceOf(IndexOutOfBoundsException.class)
+.hasMessageContaining("Index: 2, Size: 2");
 ```
 ```java
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 assertThatExceptionOfType(IndexOutOfBoundsException.class)
-        .isThrownBy(() -> {
+.isThrownBy(() -> {
 // ...
-        }).withMessageMatching("Index: \\d+, Size: \\d+");
+}).withMessageMatching("Index: \\d+, Size: \\d+");
 ```
 * 자주 발생하는 Exception의 경우 Exception별 메서드 제공하고 있음
   * assertThatIllegalArgumentException()
@@ -66,10 +66,10 @@ public class SetTest {
 ```java
 @Test
 void contains() {
-        assertThat(numbers.contains(1)).isTrue();
-        assertThat(numbers.contains(2)).isTrue();
-        assertThat(numbers.contains(3)).isTrue();
-        }
+    assertThat(numbers.contains(1)).isTrue();
+    assertThat(numbers.contains(2)).isTrue();
+    assertThat(numbers.contains(3)).isTrue();
+}
 ```
 ##### 힌트
 * [Guide to JUnit 5 Parameterized Tests](https://www.baeldung.com/parameterized-tests-junit-5)
@@ -77,8 +77,8 @@ void contains() {
 @ParameterizedTest
 @ValueSource(strings = {"", "  "})
 void isBlank_ShouldReturnTrueForNullOrBlankStrings(String input) {
-        assertTrue(Strings.isBlank(input));
-        }
+    assertTrue(Strings.isBlank(input));
+}
 ```
 #### 요구사항 3
 * 요구사항 2는 contains 메소드 결과 값이 true인 경우만 테스트 가능하다. 입력 값에 따라 결과 값이 다른 경우에 대한 테스트도 가능하도록 구현한다.
@@ -89,9 +89,9 @@ void isBlank_ShouldReturnTrueForNullOrBlankStrings(String input) {
 @ParameterizedTest
 @CsvSource(value = {"test:test", "tEst:test", "Java:java"}, delimiter = ':')
 void toLowerCase_ShouldGenerateTheExpectedLowercaseValue(String input, String expected) {
-        String actualValue = input.toLowerCase();
-        assertEquals(expected, actualValue);
-        }
+    String actualValue = input.toLowerCase();
+    assertEquals(expected, actualValue);
+}
 ```
 #### assertj 활용
 [Introduction to AssertJ](https://www.baeldung.com/introduction-to-assertj) 문서 참고해 assertj의 다양한 활용법 익힌다.
@@ -133,9 +133,9 @@ String[] tokens= text.split(",|:");
 // java.util.regex 패키지의 Matcher, Pattern import
 Matcher m = Pattern.compile("//(.)\n(.*)").matcher(text);
 if (m.find()) {
-String customDelimiter = m.group(1);
-String[] tokens= m.group(2).split(customDelimiter);
-// 덧셈 구현
+    String customDelimiter = m.group(1);
+    String[] tokens= m.group(2).split(customDelimiter);
+    // 덧셈 구현
 }
 ```
 6. 음수를 전달할 경우 RuntimeException 예외가 발생해야 한다. (예 : “-1,2,3”)
@@ -148,10 +148,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StringAddCalculatorTest {
-@Test
-public void splitAndSum_null_또는_빈문자() {
-int result = StringAddCalculator.splitAndSum(null);
-assertThat(result).isEqualTo(0);
+    @Test
+    public void splitAndSum_null_또는_빈문자() {
+        int result = StringAddCalculator.splitAndSum(null);
+        assertThat(result).isEqualTo(0);
 
         result = StringAddCalculator.splitAndSum("");
         assertThat(result).isEqualTo(0);
@@ -323,7 +323,7 @@ chore (maintain)
   * [x] 3등: 4개 일치
   * [x] 4등: 3개 일치
 * [x] 로또 여러장의 순위 구하기
-* [ ] 순위별 당첨 장 수 구하기
+* [x] 순위별 당첨 장 수 구하기
 * [ ] 총 수익률 구하기(1 기준)
   * [ ] 총 당첨 금액 / 구입 금액
 * [ ] 입력
@@ -345,13 +345,13 @@ chore (maintain)
   * 로또 번호를 생성해서 반환한다.
 * AutoLottoNumbersStrategy - 자동 로또 번호 생성 전략 구현 클래스
   * 숫자의 범위와 개수를 입력 받아서 중복되지 않는 임의의 수를 오름차순으로 반환한다.
-* Rank - 순위
+* Ranking - 순위
   * enum 타입으로 일치 개수, 당첨 금액 속성을 가진다.
   * 일치 개수에 해당하는 당첨 순위를 반환한다.
 * LottoTickets - 로또 티켓 n장
   * 로또 티켓 n장 속성을 가지는 일급 컬렉션이다.
   * 당첨 번호에 해당하는 로또 결과를 반환한다.
-* LottoResults - 로또 결과
+* LottoResult - 로또 결과
   * 로또 티켓들의 순위를 가지는 일급 컬렉션이다.
   * 순위 별 당첨 티켓 수를 집계해서 반환한다.
   * 총 당첨 금액을 계산해서 총 수익률(총 당첨 금액 / 구입 금액)을 계산해서 반환한다.
