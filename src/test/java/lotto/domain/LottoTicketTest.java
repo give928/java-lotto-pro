@@ -21,7 +21,7 @@ class LottoTicketTest {
 
     private static List<LottoNumber> getLottoNumbers(int startNumber, int endNumber) {
         return IntStream.rangeClosed(startNumber, endNumber)
-                .mapToObj(LottoNumber::new)
+                .mapToObj(LottoNumber::of)
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +56,7 @@ class LottoTicketTest {
     void thrownByInvalidSizeLottoNumbers() {
         // given
         List<LottoNumber> lottoNumbers = getLottoNumbers(1, 5);
-        lottoNumbers.add(new LottoNumber(5));
+        lottoNumbers.add(LottoNumber.of(5));
 
         // when
         ThrowableAssert.ThrowingCallable throwingCallable = () -> new LottoTicket(lottoNumbers);
