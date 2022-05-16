@@ -20,6 +20,17 @@ public class LottoTicket {
         }
     }
 
+    public Ranking rank(LottoTicket winningLottoTicket) {
+        int countOfMatch = (int) lottoNumbers.stream()
+                .filter(winningLottoTicket::contains)
+                .count();
+        return Ranking.valueOf(countOfMatch);
+    }
+
+    private boolean contains(LottoNumber lottoNumber) {
+        return lottoNumbers.contains(lottoNumber);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -35,5 +46,10 @@ public class LottoTicket {
     @Override
     public int hashCode() {
         return Objects.hash(lottoNumbers);
+    }
+
+    @Override
+    public String toString() {
+        return lottoNumbers.toString();
     }
 }
