@@ -2,6 +2,7 @@ package lotto.domain;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class LottoTickets {
     private final List<LottoTicket> values;
@@ -25,5 +26,11 @@ public class LottoTickets {
     @Override
     public int hashCode() {
         return Objects.hash(values);
+    }
+
+    public List<Ranking> rank(LottoTicket winningLottoTicket) {
+        return values.stream()
+                .map(lottoTicket -> lottoTicket.rank(winningLottoTicket))
+                .collect(Collectors.toList());
     }
 }

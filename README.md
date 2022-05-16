@@ -288,7 +288,7 @@ public enum Rank {
 
 ### 기능 목록 및 commit 로그 요구사항
 * 기능을 구현하기 전에 README.md 파일에 구현할 기능 목록을 정리해 추가한다.
-* git의 commit 단위는 앞 단계에서 README.md 파일에 정리한 기능 목록 단위로 추가한다.
+* git의 commit 단위위는 앞 단계에서 README.md 파일에 정리한 기능 목록 단위로 추가한다.
   * 참고문서: AngularJS Commit Message Conventions
 #### AngularJS Commit Message Conventions 중
 * commit message 종류를 다음과 같이 구분
@@ -317,13 +317,13 @@ chore (maintain)
 * [x] 로또 여러장 생성
 * [x] 당첨 번호 생성
   * [x] 중복되지 않는 숫자 6개
-* [x] 로또 한장의 등수 구하기
+* [x] 로또 한장의 순위 구하기
   * [x] 1등: 6개 일치
   * [x] 2등: 5개 일치
   * [x] 3등: 4개 일치
   * [x] 4등: 3개 일치
-* [ ] 로또 여러장의 등수 구하기
-* [ ] 등수별 당첨 장 수 구하기
+* [x] 로또 여러장의 순위 구하기
+* [ ] 순위별 당첨 장 수 구하기
 * [ ] 총 수익률 구하기(1 기준)
   * [ ] 총 당첨 금액 / 구입 금액
 * [ ] 입력
