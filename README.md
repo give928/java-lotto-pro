@@ -22,16 +22,16 @@ import static org.assertj.core.api.Assertions.*;
 
 assertThatThrownBy(() -> {
 // ...
-        }).isInstanceOf(IndexOutOfBoundsException.class)
-        .hasMessageContaining("Index: 2, Size: 2");
+}).isInstanceOf(IndexOutOfBoundsException.class)
+.hasMessageContaining("Index: 2, Size: 2");
 ```
 ```java
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 assertThatExceptionOfType(IndexOutOfBoundsException.class)
-        .isThrownBy(() -> {
+.isThrownBy(() -> {
 // ...
-        }).withMessageMatching("Index: \\d+, Size: \\d+");
+}).withMessageMatching("Index: \\d+, Size: \\d+");
 ```
 * 자주 발생하는 Exception의 경우 Exception별 메서드 제공하고 있음
   * assertThatIllegalArgumentException()
@@ -66,10 +66,10 @@ public class SetTest {
 ```java
 @Test
 void contains() {
-        assertThat(numbers.contains(1)).isTrue();
-        assertThat(numbers.contains(2)).isTrue();
-        assertThat(numbers.contains(3)).isTrue();
-        }
+    assertThat(numbers.contains(1)).isTrue();
+    assertThat(numbers.contains(2)).isTrue();
+    assertThat(numbers.contains(3)).isTrue();
+}
 ```
 ##### 힌트
 * [Guide to JUnit 5 Parameterized Tests](https://www.baeldung.com/parameterized-tests-junit-5)
@@ -77,8 +77,8 @@ void contains() {
 @ParameterizedTest
 @ValueSource(strings = {"", "  "})
 void isBlank_ShouldReturnTrueForNullOrBlankStrings(String input) {
-        assertTrue(Strings.isBlank(input));
-        }
+    assertTrue(Strings.isBlank(input));
+}
 ```
 #### 요구사항 3
 * 요구사항 2는 contains 메소드 결과 값이 true인 경우만 테스트 가능하다. 입력 값에 따라 결과 값이 다른 경우에 대한 테스트도 가능하도록 구현한다.
@@ -89,9 +89,9 @@ void isBlank_ShouldReturnTrueForNullOrBlankStrings(String input) {
 @ParameterizedTest
 @CsvSource(value = {"test:test", "tEst:test", "Java:java"}, delimiter = ':')
 void toLowerCase_ShouldGenerateTheExpectedLowercaseValue(String input, String expected) {
-        String actualValue = input.toLowerCase();
-        assertEquals(expected, actualValue);
-        }
+    String actualValue = input.toLowerCase();
+    assertEquals(expected, actualValue);
+}
 ```
 #### assertj 활용
 [Introduction to AssertJ](https://www.baeldung.com/introduction-to-assertj) 문서 참고해 assertj의 다양한 활용법 익힌다.
@@ -133,9 +133,9 @@ String[] tokens= text.split(",|:");
 // java.util.regex 패키지의 Matcher, Pattern import
 Matcher m = Pattern.compile("//(.)\n(.*)").matcher(text);
 if (m.find()) {
-String customDelimiter = m.group(1);
-String[] tokens= m.group(2).split(customDelimiter);
-// 덧셈 구현
+    String customDelimiter = m.group(1);
+    String[] tokens= m.group(2).split(customDelimiter);
+    // 덧셈 구현
 }
 ```
 6. 음수를 전달할 경우 RuntimeException 예외가 발생해야 한다. (예 : “-1,2,3”)
@@ -148,10 +148,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class StringAddCalculatorTest {
-@Test
-public void splitAndSum_null_또는_빈문자() {
-int result = StringAddCalculator.splitAndSum(null);
-assertThat(result).isEqualTo(0);
+    @Test
+    public void splitAndSum_null_또는_빈문자() {
+        int result = StringAddCalculator.splitAndSum(null);
+        assertThat(result).isEqualTo(0);
 
         result = StringAddCalculator.splitAndSum("");
         assertThat(result).isEqualTo(0);
@@ -189,3 +189,177 @@ assertThat(result).isEqualTo(0);
 }
 ```
 * [AssertJ Exception Assertions](https://www.baeldung.com/assertj-exception-assertion)
+
+---
+## 3단계 - 로또(자동)
+
+### 기능 요구사항
+* 로또 구입 금액을 입력하면 구입 금액에 해당하는 로또를 발급해야 한다.
+* 로또 1장의 가격은 1000원이다.
+```
+구입금액을 입력해 주세요.
+14000
+14개를 구매했습니다.
+[8, 21, 23, 41, 42, 43]
+[3, 5, 11, 16, 32, 38]
+[7, 11, 16, 35, 36, 44]
+[1, 8, 11, 31, 41, 42]
+[13, 14, 16, 38, 42, 45]
+[7, 11, 30, 40, 42, 43]
+[2, 13, 22, 32, 38, 45]
+[23, 25, 33, 36, 39, 41]
+[1, 3, 5, 14, 22, 45]
+[5, 9, 38, 41, 43, 44]
+[2, 8, 9, 18, 19, 21]
+[13, 14, 18, 21, 23, 35]
+[17, 21, 29, 37, 42, 45]
+[3, 8, 27, 30, 35, 44]
+
+지난 주 당첨 번호를 입력해 주세요.
+1, 2, 3, 4, 5, 6
+
+당첨 통계
+---------
+3개 일치 (5000원)- 1개
+4개 일치 (50000원)- 0개
+5개 일치 (1500000원)- 0개
+6개 일치 (2000000000원)- 0개
+총 수익률은 0.35입니다.(기준이 1이기 때문에 결과적으로 손해라는 의미임)
+
+### 프로그래밍 요구사항
+* 모든 기능을 TDD로 구현해 단위 테스트가 존재해야 한다. 단, UI(System.out, System.in) 로직은 제외
+  * 핵심 로직을 구현하는 코드와 UI를 담당하는 로직을 구분한다.
+  * UI 로직을 InputView, ResultView와 같은 클래스를 추가해 분리한다.
+* java enum을 적용해 프로그래밍을 구현한다.
+* 규칙 8: 일급 콜렉션을 쓴다.
+* indent(인덴트, 들여쓰기) depth를 2를 넘지 않도록 구현한다. 1까지만 허용한다.
+  * 예를 들어 while문 안에 if문이 있으면 들여쓰기는 2이다.
+  * 힌트: indent(인덴트, 들여쓰기) depth를 줄이는 좋은 방법은 함수(또는 메소드)를 분리하면 된다.
+* 함수(또는 메소드)의 길이가 15라인을 넘어가지 않도록 구현한다.
+  * 함수(또는 메소드)가 한 가지 일만 잘 하도록 구현한다.
+* 모든 로직에 단위 테스트를 구현한다. 단, UI(System.out, System.in) 로직은 제외
+  * 핵심 로직을 구현하는 코드와 UI를 담당하는 로직을 구분한다.
+  * UI 로직을 InputView, ResultView와 같은 클래스를 추가해 분리한다.
+* 자바 코드 컨벤션을 지키면서 프로그래밍한다.
+  * 참고문서: https://google.github.io/styleguide/javaguide.html 또는 https://myeonguni.tistory.com/1596
+* else 예약어를 쓰지 않는다.
+  * 힌트: if 조건절에서 값을 return하는 방식으로 구현하면 else를 사용하지 않아도 된다.
+  * else를 쓰지 말라고 하니 switch/case로 구현하는 경우가 있는데 switch/case도 허용하지 않는다.
+```
+
+#### 힌트
+* 로또 자동 생성은 Collections.shuffle() 메소드 활용한다.
+* Collections.sort() 메소드를 활용해 정렬 가능하다.
+* ArrayList의 contains() 메소드를 활용하면 어떤 값이 존재하는지 유무를 판단할 수 있다.
+* 일급 콜렉션을 쓴다.
+  * 6개의 숫자 값을 가지는 java collection을 감싸는 객체를 추가해 구현해 본다.
+* 하드 코딩을 하지 않기 위해 상수 값을 사용하면 많은 상수 값이 발생한다. 자바의 enum을 활용해 상수 값을 제거한다. 즉, enum을 활용해 일치하는 수를 로또 등수로 변경해 본다.
+```java
+public enum Rank {
+    FIRST(6, 2_000_000_000),
+    SECOND(5, 30_000_000),
+    THIRD(5, 1_500_000),
+    FOURTH(4, 50_000),
+    FIFTH(3, 5_000),
+    MISS(0, 0);
+
+    private int countOfMatch;
+    private int winningMoney;
+
+    private Rank(int countOfMatch, int winningMoney) {
+        this.countOfMatch = countOfMatch;
+        this.winningMoney = winningMoney;
+    }
+
+    public int getCountOfMatch() {
+        return countOfMatch;
+    }
+
+    public int getWinningMoney() {
+        return winningMoney;
+    }
+		
+    public static Rank valueOf(int countOfMatch, boolean matchBonus) {
+        // TODO 일치하는 수를 로또 등수로 변경한다. enum 값 목록은 "Rank[] ranks = values();"와 같이 가져올 수 있다.
+        return null;
+    }
+}
+```
+
+### 기능 목록 및 commit 로그 요구사항
+* 기능을 구현하기 전에 README.md 파일에 구현할 기능 목록을 정리해 추가한다.
+* git의 commit 단위위는 앞 단계에서 README.md 파일에 정리한 기능 목록 단위로 추가한다.
+  * 참고문서: AngularJS Commit Message Conventions
+#### AngularJS Commit Message Conventions 중
+* commit message 종류를 다음과 같이 구분
+```
+feat (feature)
+fix (bug fix)
+docs (documentation)
+style (formatting, missing semi colons, …)
+refactor
+test (when adding missing tests)
+chore (maintain)
+```
+
+### 기능 목록
+* [x] 자동 로또 번호 생성
+  * [x] 1 ~ 45 사이의 숫자
+  * [x] 중복되지 않음
+  * [x] 6개 컬렉션
+  * [x] 오름차순 정렬
+* [x] 로또 한장 생성
+  * [x] 중복되지 않는 숫자 6개
+* [x] 구입 금액에 해당하는 로또 매수 구하기
+  * [x] 로또 한장 가격은 1,000원
+  * [x] 1,000원 미만은 예외 처리
+  * [x] 잔돈은 무시
+* [x] 로또 여러장 생성
+* [x] 당첨 번호 생성
+  * [x] 중복되지 않는 숫자 6개
+* [x] 로또 한장의 순위 구하기
+  * [x] 1등: 6개 일치
+  * [x] 2등: 5개 일치
+  * [x] 3등: 4개 일치
+  * [x] 4등: 3개 일치
+* [x] 로또 여러장의 순위 구하기
+* [x] 순위별 당첨 장 수 구하기
+* [x] 총 수익률 구하기(1 기준)
+  * [x] 총 당첨 금액 / 구입 금액
+* [x] 사용자 입력
+  * [x] 구입 금액 입력
+  * [x] 당첨 번호 입력
+* [x] 결과 출력
+  * [x] 구입한 로또 매수 출력
+  * [x] 로또 티켓 번호 출력
+  * [x] 당첨 통계 출력
+
+### 도메인
+* LottoNumber - 로또 번호
+  * 1에서 45사이의 숫자 속성 원시 값을 포장한다.
+  * 정적 팩토리 메서드로 인스턴스를 생성해두고 재사용한다.
+  * 문자 형식의 숫자를 입력 받아서 로또 번호를 생성한다.
+* LottoTicket - 로또 티켓 1장
+  * 로또 번호 6개 속성을 가지는 일급 컬렉션이다.
+  * 숫자 6개의 문자열로 로또 티켓을 생성한다.
+  * 당첨 번호에 해당하는 순위를 반환한다.
+* Purchase - 구입
+  * 구입 금액 숫자 속성 원시 값을 포장한다.
+    * 1장 단위 가격인 1,000원 이상인지 확인한다.
+    * 잔돈은 무시한다.
+  * 구입 금액에 해당하는 로또 매수를 반환한다.
+* LottoNumbersStrategy - 로또 번호 생성 전략 인터페이스
+  * 로또 번호를 생성해서 반환한다.
+* AutoLottoNumbersStrategy - 자동 로또 번호 생성 전략 구현 클래스
+  * 숫자의 범위와 개수를 입력 받아서 중복되지 않는 임의의 수를 오름차순으로 반환한다.
+* Ranking - 순위
+  * enum 타입으로 일치 개수, 당첨 금액 속성을 가진다.
+  * 일치 개수에 해당하는 당첨 순위를 반환한다.
+* LottoTickets - 로또 티켓 n장
+  * 로또 티켓 n장 속성을 가지는 일급 컬렉션이다.
+  * 로또 번호 생성 전략, 구입 로또 매수로 로또 티켓 n장을 생성한다.
+  * 당첨 번호에 해당하는 로또 결과를 반환한다.
+* LottoResult - 로또 결과
+  * 로또 티켓들의 순위를 가지는 일급 컬렉션이다.
+  * 순위 별 당첨 티켓 수를 집계해서 반환한다.
+  * 총 당첨 금액을 계산해서 총 수익률(총 당첨 금액 / 구입 금액)을 계산해서 반환한다.
