@@ -17,6 +17,10 @@ public enum Ranking {
         this.winningMoney = winningMoney;
     }
 
+    public int getCountOfMatch() {
+        return countOfMatch;
+    }
+
     public int getWinningMoney() {
         return winningMoney;
     }

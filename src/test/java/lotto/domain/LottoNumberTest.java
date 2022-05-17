@@ -16,10 +16,10 @@ class LottoNumberTest {
         // given
 
         // when
-        LottoNumber lottoNumber = LottoNumber.of(value);
+        LottoNumber lottoNumber = LottoNumber.from(value);
 
         // then
-        assertThat(lottoNumber).isEqualTo(LottoNumber.of(value));
+        assertThat(lottoNumber).isEqualTo(LottoNumber.from(value));
     }
 
     @DisplayName("1 ~ 45 사이의 로또 번호가 아니면 IllegalArgumentException 이 발생한다.")
@@ -29,7 +29,7 @@ class LottoNumberTest {
         // given
 
         // when
-        ThrowableAssert.ThrowingCallable throwingCallable = () -> LottoNumber.of(value);
+        ThrowableAssert.ThrowingCallable throwingCallable = () -> LottoNumber.from(value);
 
         // then
         assertThatThrownBy(throwingCallable).isInstanceOf(IllegalArgumentException.class);

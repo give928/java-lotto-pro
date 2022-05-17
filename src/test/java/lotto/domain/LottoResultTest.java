@@ -1,5 +1,6 @@
 package lotto.domain;
 
+import lotto.domain.dto.RankingCountDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,25 +11,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class LottoResultTest {
     @Test
-    @DisplayName("당첨 결과를 생성하고 순위별 당첨 로또 수를 반환한다.")
+    @DisplayName("당첨 결과를 생성하고 순위별 당첨된 로또 티켓 수를 반환한다.")
     void count() {
         // given
         List<Ranking> rankings = Arrays.asList(Ranking.FIRST, Ranking.FOURTH, Ranking.MISS, Ranking.MISS);
         LottoResult lottoResult = new LottoResult(rankings);
 
         // when
-        int count1 = lottoResult.count(Ranking.FIRST);
-        int count2 = lottoResult.count(Ranking.SECOND);
-        int count3 = lottoResult.count(Ranking.THIRD);
-        int count4 = lottoResult.count(Ranking.FOURTH);
-        int countMiss = lottoResult.count(Ranking.MISS);
+        List<RankingCountDto> rankingCountDtos = lottoResult.getLottoRankingResults();
 
         // then
-        assertThat(count1).isEqualTo(1);
-        assertThat(count2).isZero();
-        assertThat(count3).isZero();
-        assertThat(count4).isEqualTo(1);
-        assertThat(countMiss).isEqualTo(2);
+        assertThat(rankingCountDtos).hasSize(Ranking.values().length - 1); // MISS 제외
+        assertThat(rankingCountDtos).extracting("count")
+                .containsExactly(1, 0, 0, 1);
     }
 
     @Test
@@ -39,7 +34,7 @@ class LottoResultTest {
         LottoResult lottoResult = new LottoResult(rankings);
 
         // when
-        double rateOfReturn = lottoResult.rateOfReturn();
+        double rateOfReturn = lottoResult.calculateRateOfReturn();
 
         // then
         assertThat(rateOfReturn).isEqualTo(2.5);

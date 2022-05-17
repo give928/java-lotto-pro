@@ -10,6 +10,7 @@ public class LottoNumber {
     public static final int MIN = 1;
     public static final int MAX = 45;
     private static final String ERROR_MESSAGE_INVALID_LOTTO_NUMBER = "로또 번호는 %d ~ %d 사이의 값만 가능합니다.";
+
     private static final Map<Integer, LottoNumber> values = new HashMap<>();
 
     static {
@@ -24,7 +25,11 @@ public class LottoNumber {
         this.value = value;
     }
 
-    public static LottoNumber of(int value) {
+    public static LottoNumber from(String value) {
+        return from(Integer.parseInt(Optional.ofNullable(value).orElse("0")));
+    }
+
+    public static LottoNumber from(int value) {
         LottoNumber lottoNumber = values.get(value);
         return Optional.ofNullable(lottoNumber)
                 .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_MESSAGE_INVALID_LOTTO_NUMBER, MIN, MAX)));
@@ -56,5 +61,9 @@ public class LottoNumber {
     @Override
     public String toString() {
         return String.valueOf(value);
+    }
+
+    public int toInt() {
+        return value;
     }
 }

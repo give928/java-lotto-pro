@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PurchaseTest {
-    @DisplayName("구입 금액에 해당하는 로또 매수를 반환한다.")
+    @DisplayName("구입 금액 숫자에 해당하는 로또 매수를 반환한다.")
     @ParameterizedTest(name = "{displayName} money={0}, count={1}")
     @CsvSource(value = {"1000 1", "1500 1", "2000 2"}, delimiterString = " ")
     void createPurchase(int money, int count) {
@@ -18,6 +18,19 @@ class PurchaseTest {
 
         // when
         Purchase purchase = new Purchase(money);
+
+        // then
+        assertThat(purchase.count()).isEqualTo(count);
+    }
+
+    @DisplayName("구입 금액 문자에 해당하는 로또 매수를 반환한다.")
+    @ParameterizedTest(name = "{displayName} money={0}, count={1}")
+    @CsvSource(value = {"1000 1", "1500 1", "2000 2"}, delimiterString = " ")
+    void createPurchaseFromString(String money, int count) {
+        // given
+
+        // when
+        Purchase purchase = Purchase.from(money);
 
         // then
         assertThat(purchase.count()).isEqualTo(count);

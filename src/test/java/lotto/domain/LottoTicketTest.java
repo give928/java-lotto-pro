@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +23,11 @@ class LottoTicketTest {
 
     private static List<LottoNumber> getLottoNumbers(int startNumber, int endNumber, int... appendNumber) {
         List<LottoNumber> lottoNumbers = IntStream.rangeClosed(startNumber, endNumber)
-                .mapToObj(LottoNumber::of)
+                .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList());
         if (appendNumber != null && appendNumber.length > 0) {
             for (int number : appendNumber) {
-                lottoNumbers.add(LottoNumber.of(number));
+                lottoNumbers.add(LottoNumber.from(number));
             }
         }
         return lottoNumbers;
@@ -53,6 +54,19 @@ class LottoTicketTest {
         assertThat(lottoTicket).isEqualTo(new LottoTicket(lottoNumbers));
     }
 
+    @DisplayName("숫자 6개의 문자열로 로또 티켓을 생성한다.")
+    @ParameterizedTest(name = "{displayName} numbers={0}")
+    @ValueSource(strings = {"1,2,3,4,5,6", "1, 2, 3, 4, 5, 6"})
+    void createLottoTicket(String value) {
+        // given
+
+        // when
+        LottoTicket lottoTicket = LottoTicket.from(value);
+
+        // then
+        assertThat(lottoTicket).isEqualTo(LottoTicket.from(value));
+    }
+
     @DisplayName("로또 숫자가 6개가 아니면 IllegalArgumentException 이 발생한다.")
     @ParameterizedTest(name = "{displayName} numbers={0}")
     @MethodSource("thrownByInvalidSizeLottoNumbersParameter")
@@ -71,7 +85,7 @@ class LottoTicketTest {
     void thrownByInvalidSizeLottoNumbers() {
         // given
         List<LottoNumber> lottoNumbers = getLottoNumbers(1, 5);
-        lottoNumbers.add(LottoNumber.of(5));
+        lottoNumbers.add(LottoNumber.from(5));
 
         // when
         ThrowableAssert.ThrowingCallable throwingCallable = () -> new LottoTicket(lottoNumbers);
