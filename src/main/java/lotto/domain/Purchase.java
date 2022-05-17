@@ -42,7 +42,7 @@ public class Purchase {
         }
     }
 
-    public int count() {
+    public int getIssueCount() {
         return money / PRICE;
     }
 }

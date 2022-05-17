@@ -20,7 +20,7 @@ class PurchaseTest {
         Purchase purchase = new Purchase(money);
 
         // then
-        assertThat(purchase.count()).isEqualTo(count);
+        assertThat(purchase.getIssueCount()).isEqualTo(count);
     }
 
     @DisplayName("구입 금액 문자에 해당하는 로또 매수를 반환한다.")
@@ -33,7 +33,7 @@ class PurchaseTest {
         Purchase purchase = Purchase.from(money);
 
         // then
-        assertThat(purchase.count()).isEqualTo(count);
+        assertThat(purchase.getIssueCount()).isEqualTo(count);
     }
 
     @Test

@@ -1,8 +1,6 @@
 package lotto.domain;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,7 +12,13 @@ public class LottoTickets implements Iterable<LottoTicket> {
     }
 
     public LottoTickets(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase) {
-        this.values = createLottoTickets(lottoNumbersStrategy, purchase.count());
+        this(lottoNumbersStrategy, purchase, Collections.emptyList());
+    }
+
+    public LottoTickets(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase, List<LottoTicket> manualLottoTickets) {
+        int issueCount = purchase.getIssueCount() - manualLottoTickets.size();
+        this.values = createLottoTickets(lottoNumbersStrategy, issueCount);
+        this.values.addAll(0, manualLottoTickets);
     }
 
     private List<LottoTicket> createLottoTickets(LottoNumbersStrategy lottoNumbersStrategy, int count) {
