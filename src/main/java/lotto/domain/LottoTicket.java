@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 public class LottoTicket {
     public static final int SIZE = 6;
 
-    private static final String WINNING_NUMBERS_PATTERN = "^\\d+(,\\d|, \\d)*+$";
+    private static final String WINNING_NUMBERS_PATTERN = "^\\d+(,\\d|, \\d).*$";
     private static final String WINNING_NUMBERS_SPLITTER = "\\s*,\\s*";
     private static final String ERROR_MESSAGE_INVALID_LOTTO_NUMBERS = "로또 1장은 중복되지 않는 %d개의 숫자로 구성되어야 합니다.";
 
@@ -42,14 +42,13 @@ public class LottoTicket {
         }
     }
 
-    public Ranking rank(LottoTicket winningLottoTicket) {
-        int countOfMatch = (int) lottoNumbers.stream()
-                .filter(winningLottoTicket::contains)
+    public int countOfMatch(LottoTicket lottoTicket) {
+        return (int) lottoNumbers.stream()
+                .filter(lottoTicket::contains)
                 .count();
-        return Ranking.valueOf(countOfMatch);
     }
 
-    private boolean contains(LottoNumber lottoNumber) {
+    public boolean contains(LottoNumber lottoNumber) {
         return lottoNumbers.contains(lottoNumber);
     }
 

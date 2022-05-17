@@ -4,7 +4,7 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -31,14 +31,6 @@ class LottoTicketTest {
             }
         }
         return lottoNumbers;
-    }
-
-    public static Stream<Arguments> rankParameter() {
-        return Stream.of(Arguments.of(new LottoTicket(getLottoNumbers(1, 6)), Ranking.FIRST),
-                         Arguments.of(new LottoTicket(getLottoNumbers(1, 5, 45)), Ranking.SECOND),
-                         Arguments.of(new LottoTicket(getLottoNumbers(1, 4, 44, 45)), Ranking.THIRD),
-                         Arguments.of(new LottoTicket(getLottoNumbers(1, 3, 43, 44, 45)), Ranking.FOURTH),
-                         Arguments.of(new LottoTicket(getLottoNumbers(1, 2, 42, 43, 44, 45)), Ranking.MISS));
     }
 
     @Test
@@ -94,16 +86,16 @@ class LottoTicketTest {
         assertThatThrownBy(throwingCallable).isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("당첨 번호에 해당하는 순위를 반환한다.")
-    @ParameterizedTest(name = "{displayName} numbers={0}, ranking={1}")
-    @MethodSource("rankParameter")
-    void rank(LottoTicket winningLottoTicket, Ranking expected) {
+    @DisplayName("로또 숫자 6개에 특정 숫자 포함 여부를 확인한다.")
+    @ParameterizedTest(name = "{displayName} number={0}, contains={1}")
+    @CsvSource(value = {"1,true", "7,false"}, delimiterString = ",")
+    void contains(int number, boolean expected) {
         // given
         List<LottoNumber> lottoNumbers = getLottoNumbers(1, 6);
         LottoTicket lottoTicket = new LottoTicket(lottoNumbers);
 
         // when
-        Ranking actual = lottoTicket.rank(winningLottoTicket);
+        boolean actual = lottoTicket.contains(LottoNumber.from(number));
 
         // then
         assertThat(actual).isEqualTo(expected);

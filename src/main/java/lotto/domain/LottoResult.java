@@ -40,7 +40,7 @@ public class LottoResult {
         return Stream.of(Ranking.values())
                 .filter(ranking -> ranking != Ranking.MISS)
                 .map(ranking -> new RankingCountDto(ranking, rankingMap.getOrDefault(ranking, 0L)))
-                .sorted(Comparator.comparingInt(r -> r.getRanking().getCountOfMatch()))
+                .sorted(Comparator.comparingInt(r -> r.getRanking().getWinningMoney()))
                 .collect(Collectors.toList());
     }
 }

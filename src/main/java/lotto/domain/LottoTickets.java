@@ -30,9 +30,9 @@ public class LottoTickets implements Iterable<LottoTicket> {
                 .collect(Collectors.toList());
     }
 
-    public LottoResult draw(LottoTicket winningLottoTicket) {
+    public LottoResult draw(WinningLotto winningLotto) {
         List<Ranking> rankings = values.stream()
-                .map(lottoTicket -> lottoTicket.rank(winningLottoTicket))
+                .map(winningLotto::draw)
                 .collect(Collectors.toList());
         return new LottoResult(rankings);
     }

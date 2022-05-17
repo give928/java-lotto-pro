@@ -18,8 +18,9 @@ public class LottoController {
         LottoTickets lottoTickets = new LottoTickets(lottoNumbersStrategy, purchase);
         ResultView.printLottoTickets(lottoTickets);
 
-        LottoTicket winningLottoTicket = inputWinningLottoNumbers();
-        LottoResult lottoResult = lottoTickets.draw(winningLottoTicket);
+        LottoTicket winningNumbers = inputWinningLottoNumbers();
+        LottoNumber bonusNumber = inputBonusNumber();
+        LottoResult lottoResult = lottoTickets.draw(new WinningLotto(winningNumbers, bonusNumber));
         ResultView.printLottoResult(lottoResult);
     }
 
@@ -40,6 +41,16 @@ public class LottoController {
         } catch (IllegalArgumentException e) {
             InputView.error(e.getMessage());
             return inputWinningLottoNumbers();
+        }
+    }
+
+    private LottoNumber inputBonusNumber() {
+        try {
+            String text = InputView.inputBonusNumber();
+            return LottoNumber.from(text);
+        } catch (IllegalArgumentException e) {
+            InputView.error(e.getMessage());
+            return inputBonusNumber();
         }
     }
 }
