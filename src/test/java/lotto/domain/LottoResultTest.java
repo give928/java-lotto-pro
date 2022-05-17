@@ -14,7 +14,7 @@ class LottoResultTest {
     @DisplayName("당첨 결과를 생성하고 순위별 당첨된 로또 티켓 수를 반환한다.")
     void count() {
         // given
-        List<Ranking> rankings = Arrays.asList(Ranking.FIRST, Ranking.FOURTH, Ranking.MISS, Ranking.MISS);
+        List<Ranking> rankings = Arrays.asList(Ranking.SECOND, Ranking.FIFTH, Ranking.MISS, Ranking.MISS);
         LottoResult lottoResult = new LottoResult(rankings);
 
         // when
@@ -23,14 +23,14 @@ class LottoResultTest {
         // then
         assertThat(rankingCountDtos).hasSize(Ranking.values().length - 1); // MISS 제외
         assertThat(rankingCountDtos).extracting("count")
-                .containsExactly(1, 0, 0, 1);
+                .containsExactly(1, 0, 0, 1, 0);
     }
 
     @Test
     @DisplayName("당첨 결과를 생성하고 총 수익률을 구한다.")
     void rateOfReturn() {
         // given
-        List<Ranking> rankings = Arrays.asList(Ranking.FOURTH, Ranking.MISS);
+        List<Ranking> rankings = Arrays.asList(Ranking.FIFTH, Ranking.MISS);
         LottoResult lottoResult = new LottoResult(rankings);
 
         // when

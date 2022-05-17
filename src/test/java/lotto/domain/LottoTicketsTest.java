@@ -15,8 +15,8 @@ class LottoTicketsTest {
     @DisplayName("로또 여러장을 생성한다.")
     void createLottoTickets() {
         // given
-        List<LottoTicket> values = Arrays.asList(makeLottoTicket(1, 6), makeLottoTicket(7, 12),
-                                                 makeLottoTicket(13, 18));
+        List<LottoTicket> values = Arrays.asList(lottoTicket(1, 6), lottoTicket(7, 12),
+                                                 lottoTicket(13, 18));
 
         // when
         LottoTickets lottoTickets = new LottoTickets(values);
@@ -43,27 +43,38 @@ class LottoTicketsTest {
     @DisplayName("로또 여러장의 순위를 구한다.")
     void draw() {
         // given
-        List<LottoTicket> values = Arrays.asList(makeLottoTicket(1, 6), makeLottoTicket(2, 7), makeLottoTicket(3, 8),
-                                                 makeLottoTicket(4, 9), makeLottoTicket(5, 10));
+        List<LottoTicket> values = Arrays.asList(lottoTicket(1, 6), lottoTicket(2, 7), lottoTicket(2, 6, 8),
+                                                 lottoTicket(3, 8), lottoTicket(4, 9), lottoTicket(5, 10));
         LottoTickets lottoTickets = new LottoTickets(values);
-        LottoTicket winningLottoTicket = makeLottoTicket(1, 6);
+        LottoTicket winningNumbers = lottoTicket(1, 6);
+        LottoNumber bonusNumber = LottoNumber.from(7);
+        WinningLotto winningLotto = new WinningLotto(winningNumbers, bonusNumber);
 
         // when
-        LottoResult lottoResult = lottoTickets.draw(winningLottoTicket);
+        LottoResult lottoResult = lottoTickets.draw(winningLotto);
 
         // then
         assertThat(lottoResult.getLottoRankingResults()).hasSize(Ranking.values().length - 1); // MISS 제외
         assertThat(lottoResult.getLottoRankingResults()).extracting("count")
-                .containsExactly(1, 1, 1, 1);
+                .containsExactly(1, 1, 1, 1, 1);
         assertThat(lottoResult.calculateRateOfReturn()).isEqualTo(
                 (double) (Ranking.FIRST.getWinningMoney() + Ranking.SECOND.getWinningMoney() + Ranking.THIRD.getWinningMoney()
-                        + Ranking.FOURTH.getWinningMoney() + Ranking.MISS.getWinningMoney()) / 5000);
+                        + Ranking.FOURTH.getWinningMoney() + Ranking.FIFTH.getWinningMoney() + Ranking.MISS.getWinningMoney()) / 6000);
     }
 
-    private LottoTicket makeLottoTicket(int startNumber, int endNumber) {
+    private LottoTicket lottoTicket(int startNumber, int endNumber, int... appendNumber) {
         List<LottoNumber> lottoNumbers = IntStream.rangeClosed(startNumber, endNumber)
                 .mapToObj(LottoNumber::from)
                 .collect(Collectors.toList());
+        if (appendNumber != null && appendNumber.length > 0) {
+            appendNumbers(lottoNumbers, appendNumber);
+        }
         return new LottoTicket(lottoNumbers);
+    }
+
+    private void appendNumbers(List<LottoNumber> lottoNumbers, int[] appendNumber) {
+        for (int number : appendNumber) {
+            lottoNumbers.add(LottoNumber.from(number));
+        }
     }
 }
