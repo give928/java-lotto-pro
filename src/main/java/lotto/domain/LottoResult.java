@@ -15,6 +15,17 @@ public class LottoResult {
         this.rankings = rankings;
     }
 
+    public List<RankingCountDto> getLottoRankingResults() {
+        Map<Ranking, Long> rankingMap = rankings.stream()
+                .collect(Collectors.groupingBy(r -> r, Collectors.counting()));
+
+        return Stream.of(Ranking.values())
+                .filter(ranking -> ranking != Ranking.MISS)
+                .map(ranking -> new RankingCountDto(ranking, rankingMap.getOrDefault(ranking, 0L)))
+                .sorted(Comparator.comparingInt(r -> r.getRanking().getWinningMoney()))
+                .collect(Collectors.toList());
+    }
+
     public double calculateRateOfReturn() {
         long winningMoney = calculateWinningMoney();
         if (winningMoney == 0) {
@@ -25,22 +36,12 @@ public class LottoResult {
     }
 
     private int calculatePurchaseMoney() {
-        return Purchase.money(rankings.size());
+        return Purchase.getPurchaseMoney(rankings.size());
     }
 
     private int calculateWinningMoney() {
         return rankings.stream()
                 .mapToInt(Ranking::getWinningMoney)
                 .sum();
-    }
-
-    public List<RankingCountDto> getLottoRankingResults() {
-        Map<Ranking, Long> rankingMap = rankings.stream().collect(Collectors.groupingBy(r -> r, Collectors.counting()));
-
-        return Stream.of(Ranking.values())
-                .filter(ranking -> ranking != Ranking.MISS)
-                .map(ranking -> new RankingCountDto(ranking, rankingMap.getOrDefault(ranking, 0L)))
-                .sorted(Comparator.comparingInt(r -> r.getRanking().getWinningMoney()))
-                .collect(Collectors.toList());
     }
 }

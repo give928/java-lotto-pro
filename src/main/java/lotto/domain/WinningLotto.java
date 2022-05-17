@@ -19,7 +19,7 @@ public class WinningLotto {
     }
 
     public Ranking draw(LottoTicket lottoTicket) {
-        int countOfMatch = lottoTicket.countOfMatch(winningNumbers);
+        int countOfMatch = lottoTicket.getCountOfMatch(winningNumbers);
         boolean matchBonus = lottoTicket.contains(bonusNumber);
         return Ranking.valueOf(countOfMatch, matchBonus);
     }

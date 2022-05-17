@@ -55,7 +55,7 @@ class PurchaseTest {
         // given
 
         // when
-        int money = Purchase.money(3);
+        int money = Purchase.getPurchaseMoney(3);
 
         // then
         assertThat(money).isEqualTo(3_000);

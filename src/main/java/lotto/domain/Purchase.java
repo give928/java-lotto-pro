@@ -32,7 +32,7 @@ public class Purchase {
                 String.format(ERROR_MESSAGE_INVALID_PURCHASE_MONEY, StringUtils.formatThousandsSeparators(PRICE)));
     }
 
-    public static int money(int count) {
+    public static int getPurchaseMoney(int count) {
         return PRICE * count;
     }
 

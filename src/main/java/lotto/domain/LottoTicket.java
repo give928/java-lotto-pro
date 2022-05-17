@@ -42,7 +42,7 @@ public class LottoTicket {
         }
     }
 
-    public int countOfMatch(LottoTicket lottoTicket) {
+    public int getCountOfMatch(LottoTicket lottoTicket) {
         return (int) lottoNumbers.stream()
                 .filter(lottoTicket::contains)
                 .count();
@@ -72,7 +72,7 @@ public class LottoTicket {
     @Override
     public String toString() {
         return lottoNumbers.stream()
-                .sorted((o1, o2) -> o1.toInt() - o2.toInt())
+                .sorted(Comparator.comparingInt(LottoNumber::toInt))
                 .collect(Collectors.toList())
                 .toString();
     }

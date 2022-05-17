@@ -33,12 +33,8 @@ public enum Ranking {
             return MISS;
         }
 
-        if (isMatchSecondOrThird(countOfMatch)) {
-            return secondOrThird(matchBonus);
-        }
-
         return Stream.of(values())
-                .filter(ranking -> ranking.isMatch(countOfMatch))
+                .filter(ranking -> ranking.isMatch(countOfMatch, matchBonus))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format("%d개에 해당하는 로또 순위가 없습니다.", countOfMatch)));
     }
@@ -47,18 +43,10 @@ public enum Ranking {
         return countOfMatch >= MISS.countOfMatch && countOfMatch < FIFTH.countOfMatch;
     }
 
-    private static boolean isMatchSecondOrThird(int countOfMatch) {
-        return SECOND.isMatch(countOfMatch);
-    }
-
-    private static Ranking secondOrThird(boolean matchBonus) {
+    private boolean isMatch(int countOfMatch, boolean matchBonus) {
         if (matchBonus) {
-            return SECOND;
+            return this.countOfMatch == countOfMatch;
         }
-        return THIRD;
-    }
-
-    private boolean isMatch(int countOfMatch) {
-        return this.countOfMatch == countOfMatch;
+        return !this.matchBonus && this.countOfMatch == countOfMatch;
     }
 }
