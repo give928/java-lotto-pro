@@ -11,23 +11,24 @@ public class LottoTickets implements Iterable<LottoTicket> {
         this.values = values;
     }
 
-    public LottoTickets(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase) {
-        this(lottoNumbersStrategy, purchase, Collections.emptyList());
+    public static LottoTickets of(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase) {
+        return of(lottoNumbersStrategy, purchase, Collections.emptyList());
     }
 
-    public LottoTickets(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase, List<LottoTicket> manualLottoTickets) {
+    public static LottoTickets of(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase, List<LottoTicket> manualLottoTickets) {
         int issueCount = purchase.getIssueCount() - manualLottoTickets.size();
-        this.values = createLottoTickets(lottoNumbersStrategy, issueCount);
-        this.values.addAll(0, manualLottoTickets);
+        List<LottoTicket> lottoTickets = createLottoTickets(lottoNumbersStrategy, issueCount);
+        lottoTickets.addAll(0, manualLottoTickets);
+        return new LottoTickets(lottoTickets);
     }
 
-    private List<LottoTicket> createLottoTickets(LottoNumbersStrategy lottoNumbersStrategy, int count) {
+    private static List<LottoTicket> createLottoTickets(LottoNumbersStrategy lottoNumbersStrategy, int count) {
         return IntStream.range(0, count)
                 .mapToObj(index -> new LottoTicket(generateLottoNumbers(lottoNumbersStrategy)))
                 .collect(Collectors.toList());
     }
 
-    private List<LottoNumber> generateLottoNumbers(LottoNumbersStrategy lottoNumbersStrategy) {
+    private static List<LottoNumber> generateLottoNumbers(LottoNumbersStrategy lottoNumbersStrategy) {
         return lottoNumbersStrategy.generate()
                 .stream()
                 .map(LottoNumber::from)

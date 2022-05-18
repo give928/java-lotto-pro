@@ -33,10 +33,10 @@ class LottoTicketsTest {
         LottoNumbersStrategy lottoNumbersStrategy = () -> Arrays.asList(1, 2, 3, 4, 5, 6);
 
         // when
-        LottoTickets lottoTickets = new LottoTickets(lottoNumbersStrategy, purchase);
+        LottoTickets lottoTickets = LottoTickets.of(lottoNumbersStrategy, purchase);
 
         // then
-        assertThat(lottoTickets).isEqualTo(new LottoTickets(lottoNumbersStrategy, purchase));
+        assertThat(lottoTickets).isEqualTo(LottoTickets.of(lottoNumbersStrategy, purchase));
     }
 
     @Test
@@ -85,9 +85,9 @@ class LottoTicketsTest {
         List<LottoTicket> manualLottoTickets = Arrays.asList(lottoTicket(1, 6), lottoTicket(2, 7));
 
         // when
-        LottoTickets lottoTickets = new LottoTickets(lottoNumbersStrategy, purchase, manualLottoTickets);
+        LottoTickets lottoTickets = LottoTickets.of(lottoNumbersStrategy, purchase, manualLottoTickets);
 
         // then
-        assertThat(lottoTickets).isEqualTo(new LottoTickets(lottoNumbersStrategy, purchase, manualLottoTickets));
+        assertThat(lottoTickets).isEqualTo(LottoTickets.of(lottoNumbersStrategy, purchase, manualLottoTickets));
     }
 }

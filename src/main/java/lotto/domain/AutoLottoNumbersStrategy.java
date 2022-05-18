@@ -15,10 +15,14 @@ public class AutoLottoNumbersStrategy implements LottoNumbersStrategy {
         this(LottoNumber.MIN, LottoNumber.MAX, LottoTicket.SIZE);
     }
 
-    public AutoLottoNumbersStrategy(int startNumber, int endNumber, int numberSize) {
+    private AutoLottoNumbersStrategy(int startNumber, int endNumber, int numberSize) {
         this.startNumber = startNumber;
         this.endNumber = endNumber;
         this.numberSize = numberSize;
+    }
+
+    public static AutoLottoNumbersStrategy of(int startNumber, int endNumber, int numberSize) {
+        return new AutoLottoNumbersStrategy(startNumber, endNumber, numberSize);
     }
 
     @Override

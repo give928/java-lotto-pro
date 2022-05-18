@@ -20,7 +20,7 @@ public class LottoController {
         List<LottoTicket> manualLottoTickets = inputManualLotto(purchase.getIssueCount());
         ResultView.printPurchaseCount(purchase.getIssueCount() - manualLottoTickets.size(), manualLottoTickets.size());
 
-        LottoTickets lottoTickets = new LottoTickets(lottoNumbersStrategy, purchase, manualLottoTickets);
+        LottoTickets lottoTickets = LottoTickets.of(lottoNumbersStrategy, purchase, manualLottoTickets);
         ResultView.printLottoTickets(lottoTickets);
 
         LottoTicket winningNumbers = inputWinningLottoNumbers();
