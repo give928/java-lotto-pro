@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class AutoLottoNumbersStrategy implements LottoNumbersStrategy {
+    private static final int SUB_LIST_FROM_INDEX = 0;
+
     private final int startNumber;
     private final int endNumber;
     private final int numberSize;
@@ -29,7 +31,7 @@ public class AutoLottoNumbersStrategy implements LottoNumbersStrategy {
     public List<Integer> generate() {
         List<Integer> rangeNumbers = generateRangeNumbers(startNumber, endNumber);
         Collections.shuffle(rangeNumbers);
-        List<Integer> shuffleNumbers = new ArrayList<>(rangeNumbers.subList(0, numberSize));
+        List<Integer> shuffleNumbers = new ArrayList<>(rangeNumbers.subList(SUB_LIST_FROM_INDEX, numberSize));
         Collections.sort(shuffleNumbers);
         return shuffleNumbers;
     }

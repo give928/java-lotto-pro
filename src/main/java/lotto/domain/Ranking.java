@@ -10,6 +10,8 @@ public enum Ranking {
     FIFTH(3, 5_000, false),
     MISS(0, 0, false);
 
+    public static final String ERROR_MESSAGE_INVALID_COUNT_OF_MATCH = "%d개에 해당하는 로또 순위가 없습니다.";
+
     private final int countOfMatch;
     private final int winningMoney;
     private final boolean matchBonus;
@@ -36,7 +38,7 @@ public enum Ranking {
         return Stream.of(values())
                 .filter(ranking -> ranking.isMatch(countOfMatch, matchBonus))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("%d개에 해당하는 로또 순위가 없습니다.", countOfMatch)));
+                .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_MESSAGE_INVALID_COUNT_OF_MATCH, countOfMatch)));
     }
 
     private static boolean isMiss(int countOfMatch) {

@@ -28,21 +28,21 @@ public class LottoTicket {
     private static String[] toArray(String text) {
         return Optional.ofNullable(text)
                 .filter(str -> str.matches(WINNING_NUMBERS_PATTERN))
-                .orElseThrow(LottoTicket::throwException)
+                .orElseThrow(LottoTicket::throwInvalidLottoNumbersException)
                 .split(WINNING_NUMBERS_SPLITTER);
     }
 
-    private static IllegalArgumentException throwException() {
+    private static IllegalArgumentException throwInvalidLottoNumbersException() {
         throw new IllegalArgumentException(String.format(ERROR_MESSAGE_INVALID_LOTTO_NUMBERS, SIZE));
     }
 
     private void validate(Set<LottoNumber> lottoNumbersSet) {
         if (lottoNumbersSet.size() != SIZE) {
-            throwException();
+            throwInvalidLottoNumbersException();
         }
     }
 
-    public int getCountOfMatch(LottoTicket lottoTicket) {
+    public int findCountOfMatch(LottoTicket lottoTicket) {
         return (int) lottoNumbers.stream()
                 .filter(lottoTicket::contains)
                 .count();

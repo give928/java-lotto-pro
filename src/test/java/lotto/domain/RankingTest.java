@@ -26,13 +26,9 @@ class RankingTest {
     @MethodSource("rankingValueOfParameter")
     void rankingValueOf(int countOfMatch, boolean matchBonus, Ranking expected) {
         // given
-        System.out.println("countOfMatch = " + countOfMatch);
-        System.out.println("matchBonus = " + matchBonus);
-        System.out.println("expected = " + expected);
 
         // when
         Ranking actual = Ranking.valueOf(countOfMatch, matchBonus);
-        System.out.println("actual = " + actual);
 
         // then
         assertThat(actual).isEqualTo(expected);

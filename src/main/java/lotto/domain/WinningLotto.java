@@ -3,6 +3,8 @@ package lotto.domain;
 import java.util.Objects;
 
 public class WinningLotto {
+    public static final String ERROR_MESSAGE_INVALID_DUPLICATE_BONUS_NUMBER = "보너스 번호를 당첨 번호에 포합되지 않는 숫자로 입력해 주세요.";
+
     private final LottoTicket winningNumbers;
     private final LottoNumber bonusNumber;
 
@@ -14,12 +16,12 @@ public class WinningLotto {
 
     private void validate(LottoTicket winningNumbers, LottoNumber bonusNumber) {
         if (winningNumbers.contains(bonusNumber)) {
-            throw new IllegalArgumentException("보너스 번호를 당첨 번호에 포합되지 않는 숫자로 입력해 주세요.");
+            throw new IllegalArgumentException(ERROR_MESSAGE_INVALID_DUPLICATE_BONUS_NUMBER);
         }
     }
 
     public Ranking draw(LottoTicket lottoTicket) {
-        int countOfMatch = lottoTicket.getCountOfMatch(winningNumbers);
+        int countOfMatch = lottoTicket.findCountOfMatch(winningNumbers);
         boolean matchBonus = lottoTicket.contains(bonusNumber);
         return Ranking.valueOf(countOfMatch, matchBonus);
     }
@@ -33,8 +35,7 @@ public class WinningLotto {
             return false;
         }
         WinningLotto winningLotto = (WinningLotto) o;
-        return Objects.equals(this.winningNumbers, winningLotto.winningNumbers) && Objects.equals(bonusNumber,
-                                                                                                  winningLotto.bonusNumber);
+        return Objects.equals(this.winningNumbers, winningLotto.winningNumbers) && Objects.equals(bonusNumber, winningLotto.bonusNumber);
     }
 
     @Override

@@ -24,21 +24,21 @@ public class Purchase {
         return Optional.ofNullable(text)
                 .filter(str -> str.matches(MONEY_PATTERN))
                 .map(Integer::parseInt)
-                .orElseThrow(Purchase::throwException);
+                .orElseThrow(Purchase::throwInvalidPurchaseMoneyException);
     }
 
-    private static IllegalArgumentException throwException() {
+    private static IllegalArgumentException throwInvalidPurchaseMoneyException() {
         throw new IllegalArgumentException(
                 String.format(ERROR_MESSAGE_INVALID_PURCHASE_MONEY, StringUtils.formatThousandsSeparators(PRICE)));
     }
 
-    public static int getPurchaseMoney(int count) {
+    public static int calculatePurchaseMoney(int count) {
         return PRICE * count;
     }
 
     private void validate(int money) {
         if (money < PRICE) {
-            throwException();
+            throwInvalidPurchaseMoneyException();
         }
     }
 

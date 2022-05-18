@@ -43,7 +43,7 @@ public class ResultView {
     }
 
     private static void printLottoRankingCounts(LottoResult lottoResult) {
-        List<RankingCountDto> rankingCountDtos = lottoResult.getLottoRankingResults();
+        List<RankingCountDto> rankingCountDtos = lottoResult.combineRankingCounts();
         for (RankingCountDto rankingCountDto : rankingCountDtos) {
             printf(RESULT_MESSAGE_LOTTO_RESULT_RANK, rankingCountDto.getRanking().getCountOfMatch(),
                    rankingCountDto.getRanking().getWinningMoney(), rankingCountDto.getCount());

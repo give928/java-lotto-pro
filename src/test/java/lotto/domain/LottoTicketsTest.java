@@ -52,8 +52,8 @@ class LottoTicketsTest {
         LottoResult lottoResult = lottoTickets.draw(winningLotto);
 
         // then
-        assertThat(lottoResult.getLottoRankingResults()).hasSize(Ranking.values().length - 1); // MISS 제외
-        assertThat(lottoResult.getLottoRankingResults()).extracting("count")
+        assertThat(lottoResult.combineRankingCounts()).hasSize(Ranking.values().length - 1); // MISS 제외
+        assertThat(lottoResult.combineRankingCounts()).extracting("count")
                 .containsExactly(1, 1, 1, 1, 1);
         assertThat(lottoResult.calculateRateOfReturn()).isEqualTo(
                 (double) (Ranking.FIRST.getWinningMoney() + Ranking.SECOND.getWinningMoney() + Ranking.THIRD.getWinningMoney()

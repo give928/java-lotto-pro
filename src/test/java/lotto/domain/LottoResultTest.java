@@ -18,7 +18,7 @@ class LottoResultTest {
         LottoResult lottoResult = new LottoResult(rankings);
 
         // when
-        List<RankingCountDto> rankingCountDtos = lottoResult.getLottoRankingResults();
+        List<RankingCountDto> rankingCountDtos = lottoResult.combineRankingCounts();
 
         // then
         assertThat(rankingCountDtos).hasSize(Ranking.values().length - 1); // MISS 제외
