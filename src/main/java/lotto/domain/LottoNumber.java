@@ -1,21 +1,25 @@
 package lotto.domain;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LottoNumber {
     public static final int MIN = 1;
     public static final int MAX = 45;
+
+    private static final String NULL_DEFAULT_VALUE = "0";
     private static final String ERROR_MESSAGE_INVALID_LOTTO_NUMBER = "로또 번호는 %d ~ %d 사이의 값만 가능합니다.";
 
-    private static final Map<Integer, LottoNumber> values = new HashMap<>();
+    private static final Map<Integer, LottoNumber> values;
 
     static {
-        IntStream.rangeClosed(MIN, MAX)
-                .forEach(i -> values.put(i, new LottoNumber(i)));
+        values = IntStream.rangeClosed(MIN, MAX)
+                .boxed()
+                .collect(Collectors.toMap(Function.identity(), LottoNumber::new));
     }
 
     private final int value;
@@ -26,13 +30,15 @@ public class LottoNumber {
     }
 
     public static LottoNumber from(String value) {
-        return from(Integer.parseInt(Optional.ofNullable(value).orElse("0")));
+        return from(Integer.parseInt(Optional.ofNullable(value)
+                                             .orElse(NULL_DEFAULT_VALUE)));
     }
 
     public static LottoNumber from(int value) {
         LottoNumber lottoNumber = values.get(value);
         return Optional.ofNullable(lottoNumber)
-                .orElseThrow(() -> new IllegalArgumentException(String.format(ERROR_MESSAGE_INVALID_LOTTO_NUMBER, MIN, MAX)));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format(ERROR_MESSAGE_INVALID_LOTTO_NUMBER, MIN, MAX)));
     }
 
     private static void validate(int value) {

@@ -8,7 +8,7 @@ import lotto.domain.dto.RankingCountDto;
 import java.util.List;
 
 public class ResultView {
-    private static final String RESULT_MESSAGE_PURCHASE_LOTTO_TICKET_COUNT = "%d개를 구매했습니다.";
+    private static final String RESULT_MESSAGE_PURCHASE_LOTTO_TICKET_COUNT = "수동으로 %d장, 자동으로 %d개를 구매했습니다.";
     private static final String RESULT_MESSAGE_LOTTO_RESULT_TITLE = "당첨 통계";
     private static final String RESULT_MESSAGE_LOTTO_RESULT_LINE = "---------";
     private static final String RESULT_MESSAGE_LOTTO_RESULT_RANK = "%d개 일치 (%d원)- %d개%n";
@@ -19,8 +19,8 @@ public class ResultView {
     private ResultView() {
     }
 
-    public static void printPurchaseCount(int count) {
-        print(String.format(RESULT_MESSAGE_PURCHASE_LOTTO_TICKET_COUNT, count));
+    public static void printPurchaseCount(int autoLottoCount, int manualLottoCount) {
+        print(String.format(RESULT_MESSAGE_PURCHASE_LOTTO_TICKET_COUNT, manualLottoCount, autoLottoCount));
     }
 
     public static void printLottoTickets(LottoTickets lottoTickets) {
@@ -43,7 +43,7 @@ public class ResultView {
     }
 
     private static void printLottoRankingCounts(LottoResult lottoResult) {
-        List<RankingCountDto> rankingCountDtos = lottoResult.getLottoRankingResults();
+        List<RankingCountDto> rankingCountDtos = lottoResult.combineRankingCounts();
         for (RankingCountDto rankingCountDto : rankingCountDtos) {
             printf(RESULT_MESSAGE_LOTTO_RESULT_RANK, rankingCountDto.getRanking().getCountOfMatch(),
                    rankingCountDto.getRanking().getWinningMoney(), rankingCountDto.getCount());

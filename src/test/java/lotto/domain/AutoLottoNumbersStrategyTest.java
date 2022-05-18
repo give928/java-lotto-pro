@@ -15,7 +15,7 @@ class AutoLottoNumbersStrategyTest {
         int startNumber = 1;
         int endNumber = 45;
         int numberSize = 6;
-        LottoNumbersStrategy lottoNumbersStrategy = new AutoLottoNumbersStrategy(startNumber, endNumber, numberSize);
+        LottoNumbersStrategy lottoNumbersStrategy = AutoLottoNumbersStrategy.of(startNumber, endNumber, numberSize);
 
         // when
         List<Integer> numbers = lottoNumbersStrategy.generate();
@@ -34,7 +34,7 @@ class AutoLottoNumbersStrategyTest {
         int startNumber = 1;
         int endNumber = 6;
         int numberSize = 6;
-        LottoNumbersStrategy lottoNumbersStrategy = new AutoLottoNumbersStrategy(startNumber, endNumber, numberSize);
+        LottoNumbersStrategy lottoNumbersStrategy = AutoLottoNumbersStrategy.of(startNumber, endNumber, numberSize);
 
         // when
         List<Integer> numbers = lottoNumbersStrategy.generate();
