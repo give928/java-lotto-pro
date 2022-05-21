@@ -8,7 +8,7 @@ public class LottoTickets implements Iterable<LottoTicket> {
     private final List<LottoTicket> values;
 
     public LottoTickets(List<LottoTicket> values) {
-        this.values = values;
+        this.values = Collections.unmodifiableList(values);
     }
 
     public static LottoTickets of(LottoNumbersStrategy lottoNumbersStrategy, Purchase purchase) {

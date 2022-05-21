@@ -2,6 +2,7 @@ package lotto.domain;
 
 import lotto.domain.dto.RankingCountDto;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class LottoResult {
     private final List<Ranking> rankings;
 
     public LottoResult(List<Ranking> rankings) {
-        this.rankings = rankings;
+        this.rankings = Collections.unmodifiableList(rankings);
     }
 
     public List<RankingCountDto> combineRankingCounts() {
